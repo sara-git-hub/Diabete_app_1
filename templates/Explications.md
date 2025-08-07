@@ -34,3 +34,4 @@ Le modèle ML (`model.pkl`) utilise 5 caractéristiques :
 La prédiction retourne :
 - Résultat (0: Non diabétique, 1: Diabétique)
 - Niveau de confiance (%)
+
