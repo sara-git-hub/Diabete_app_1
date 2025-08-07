@@ -1,46 +1,125 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-4">
-    <div class="container">
-        <a class="navbar-brand" href="/">
-            <i class="fas fa-heartbeat me-2"></i> Diabète Predictor
-        </a>
+<style>
+    /* Style minimal pour la navbar */
+    nav {
+        background-color: #3498db;
+        padding: 1rem;
+        color: white;
+    }
+    
+    nav > div {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+    
+    nav a {
+        color: white;
+        text-decoration: none;
+        padding: 0.5rem 1rem;
+    }
+    
+    nav ul {
+        display: flex;
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        gap: 1rem;
+    }
+    
+    nav li {
+        position: relative;
+    }
+    
+    nav li ul {
+        display: none;
+        position: absolute;
+        background-color: white;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        padding: 0.5rem 0;
+        min-width: 150px;
+    }
+    
+    nav li:hover ul {
+        display: block;
+    }
+    
+    nav li ul a {
+        color: #333;
+        display: block;
+    }
+    
+    nav button {
+        background: none;
+        border: none;
+        color: white;
+        font-size: 1.5rem;
+        cursor: pointer;
+        display: none;
+    }
+    
+    /* Style pour les messages flash */
+    [class^="flash-"] {
+        padding: 1rem;
+        margin: 1rem auto;
+        max-width: 1200px;
+        border-radius: 4px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    
+    .flash-success {
+        background-color: #d4edda;
+        color: #155724;
+        border: 1px solid #c3e6cb;
+    }
+    
+    .flash-error {
+        background-color: #f8d7da;
+        color: #721c24;
+        border: 1px solid #f5c6cb;
+    }
+    
+    .flash-message button {
+        background: none;
+        border: none;
+        font-size: 1.2rem;
+        cursor: pointer;
+    }
+</style>
+
+<nav>
+    <div>
+        <a href="/">Diabète Predictor</a>
         
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-            <span class="navbar-toggler-icon"></span>
-        </button>
+        <button type="button">≡</button>
         
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav me-auto">
+        <div>
+            <ul>
                 {% if request.session.get('doctor_id') %}
-                <li class="nav-item">
-                    <a class="nav-link" href="/patients">
-                        <i class="fas fa-users me-1"></i> Patients
-                    </a>
+                <li>
+                    <a href="/patients">Patients</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/add">
-                        <i class="fas fa-user-plus me-1"></i> Ajouter
-                    </a>
+                <li>
+                    <a href="/add">Ajouter</a>
                 </li>
                 {% endif %}
             </ul>
             
-            <ul class="navbar-nav">
+            <ul>
                 {% if request.session.get('doctor_id') %}
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="userDropdown" data-bs-toggle="dropdown">
-                        <i class="fas fa-user-md me-1"></i> {{ request.session.get('username') }}
-                    </a>
-                    <ul class="dropdown-menu dropdown-menu-end">
-                        <li><a class="dropdown-item" href="/logout">
-                            <i class="fas fa-sign-out-alt me-1"></i> Déconnexion
-                        </a></li>
+                <li>
+                    <a href="#">{{ request.session.get('username') }}</a>
+                    <ul>
+                        <li><a href="/logout">Déconnexion</a></li>
                     </ul>
                 </li>
                 {% else %}
-                <li class="nav-item">
-                    <a class="nav-link" href="/login">
-                        <i class="fas fa-sign-in-alt me-1"></i> Connexion
-                    </a>
+                <li>
+                    <a href="/login">Connexion</a>
                 </li>
                 {% endif %}
             </ul>
@@ -50,19 +129,15 @@
 
 <!-- Messages flash -->
 {% if request.query_params.get('success') %}
-<div class="container">
-    <div class="alert alert-success alert-dismissible fade show mt-2">
-        {{ request.query_params.get('success') }}
-        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-    </div>
+<div class="flash-success">
+    <div>{{ request.query_params.get('success') }}</div>
+    <button type="button">×</button>
 </div>
 {% endif %}
 
 {% if request.query_params.get('error') %}
-<div class="container">
-    <div class="alert alert-danger alert-dismissible fade show mt-2">
-        {{ request.query_params.get('error') }}
-        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-    </div>
+<div class="flash-error">
+    <div>{{ request.query_params.get('error') }}</div>
+    <button type="button">×</button>
 </div>
 {% endif %}
